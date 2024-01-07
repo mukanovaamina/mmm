@@ -36,3 +36,24 @@ function topFunction() {
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
 }
+function scrollToImage(searchTerm) {
+  var images = document.querySelectorAll("img[alt*='" + searchTerm + "']");
+
+  if (images.length > 0) {
+    images.forEach(function (img) {
+      img.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  } else {
+    console.log("Изображение с alt, содержащим '" + searchTerm + "', не найдено.");
+  }
+}
+
+var searchForm = document.querySelector(".form-inline");
+
+if (searchForm) {
+  searchForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var searchTerm = document.getElementById("Search").value.trim().toLowerCase();
+    scrollToImage(searchTerm);
+  });
+}
