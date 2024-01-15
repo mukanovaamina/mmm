@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Rates</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+
+        h1{
+            color: #0b0b0b;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>Exchange Rates</h1>
+</header>
+
+<table id="exchangeRatesTable">
+    <thead>
+    <tr>
+        <th>Currency</th>
+        <th>Rate</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const apiKey = '8fd9c067d0034464b9dba5b9a8bef4df';
+    const apiUrl = 'https://open.er-api.com/v6/latest';
+
+    axios.get(apiUrl, {
+        params: {
+            apiKey: apiKey,
+        }
+    })
+        .then(response => {
+            const rates = response.data.rates;
+            displayExchangeRates(rates);
+        })
+        .catch(error => {
+            console.error('Error when requesting exchange rates:', error);
+        });
+
+    function displayExchangeRates(rates) {
+        const exchangeRatesTable = document.getElementById('exchangeRatesTable');
+        const tbody = exchangeRatesTable.querySelector('tbody');
+
+        for (const currency in rates) {
+            const row = document.createElement('tr');
+
+            const currencyCell = document.createElement('td');
+            currencyCell.textContent = currency;
+            row.appendChild(currencyCell);
+
+            const rateCell = document.createElement('td');
+            rateCell.textContent = rates[currency];
+            row.appendChild(rateCell);
+
+            tbody.appendChild(row);
+        }
+    }
+</script>
+
+</body>
+</html>
