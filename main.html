@@ -6,7 +6,7 @@
   <title>mortex</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="main.css">
+  <link rel="stylesheet" type="text/css" href="guzz.css">
   <link rel="icon" type="image/x-icon" href="C:\Users\acer\Desktop\guzz\guzz.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
  
@@ -101,7 +101,7 @@
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img
-            src="guzz.png"
+                  src="mortex.jpg"
             alt="Los Angeles"
             class="d-block w-100"
             height="500px"
@@ -109,7 +109,7 @@
         </div>
         <div class="carousel-item">
           <img
-            src="guzz.png"
+            src="mortex.jpg"
             alt="Chicago"
             class="d-block w-100"
             height="500px"
@@ -117,7 +117,7 @@
         </div>
         <div class="carousel-item">
           <img
-            src="guzz.png"
+            src="mortex.jpg"
             alt="New York"
             class="d-block w-100"
             height="500px"
@@ -268,8 +268,14 @@
       <button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">
         <i class="fas fa-arrow-up"></i>
       </button>
-    </nav>
-    <script src="main.js"></script>
+    <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="images" multiple />
+      <input type="submit" value="Upload" />
+    </form>
+
+  </nav>
+
+  <script src="guzz.js"></script>
 
   </body>
 </html>
