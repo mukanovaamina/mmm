@@ -12,7 +12,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="stylesheet" type="text/css" href="guzz.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
 
     <link
@@ -24,51 +24,22 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <style>
+      #animated-div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: relative;
+      }
 
+      body {
+        list-style-type: upper-roman;
+        background-color: azure;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+    </style>
   </head>
   <body>
-    <div class="w3-container">
-      <div class="w3-bar w3-black">
-        <button
-          class="w3-bar-item w3-button tablink w3-red"
-          onclick="openCity(event,'London')"
-        >
-          Call
-        </button>
-        <button
-          class="w3-bar-item w3-button tablink"
-          onclick="openCity(event,'Paris')"
-        >
-          Web-sites
-        </button>
-        <button
-          class="w3-bar-item w3-button tablink"
-          onclick="openCity(event,'Tokyo')"
-        >
-          e-mail
-        </button>
-      </div>
-      <p id="demo"></p>
-      <div id="London" class="w3-container w3-border city">
-        <h2>Call</h2>
-        <p>8-778-639-7777</p>
-      </div>
-
-      <div id="Paris" class="w3-container w3-border city" style="display: none">
-        <h2>Web-pages</h2>
-        <p>@mortex</p>
-      </div>
-
-      <div id="Tokyo" class="w3-container w3-border city" style="display: none">
-        <h2>e-mail</h2>
-        <footer>
-          <p>
-            <a href="mailto:mortex@mail.ru">mortex@mail.ru</a>
-          </p>
-        </footer>
-      </div>
-    </div>
-
     <script>
       function openCity(evt, cityName) {
         var i, x, tablinks;
@@ -84,13 +55,7 @@
         evt.currentTarget.className += " w3-red";
       }
     </script>
-    <style>
-      body {
-        list-style-type: upper-roman;
-        background-color: azure;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-    </style>
+
     <div
       class="container d-flex justify-content-center align-items-center vh-100"
     >
@@ -124,10 +89,39 @@
           >
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+
+        <!-- Новая кнопка "Register" -->
+        <button
+          type="button"
+          class="btn btn-secondary ml-2"
+          onclick="location.href='register.html'"
+        >
+          Register
+        </button>
       </form>
     </div>
 
+    <div id="animated-div"></div>
 
+    <script>
+      const animatedDiv = document.getElementById("animated-div");
+      let position = 0;
+      let direction = 1;
+
+      function animate() {
+        position += direction * 2;
+        if (
+          position >= window.innerWidth - animatedDiv.clientWidth ||
+          position <= 0
+        ) {
+          direction *= -1;
+        }
+
+        animatedDiv.style.left = position + "px";
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    </script>
   </body>
 </html>
-
