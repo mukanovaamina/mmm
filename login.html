@@ -3,47 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration Form</title>
-  <link rel="stylesheet" type="text/css" href="guzz.css">
+  <title>Регистрация</title>
+  <script src="server.js"></script>
 </head>
 <body>
-<h2>Registration Form</h2>
-<form id="registrationForm">
-  <label for="username">Username:</label>
-  <input type="text" id="username" required>
-  <br>
-  <label for="password">Password:</label>
-  <input type="password" id="password" required>
-  <br>
-  <button type="button" onclick="registerUser()">Register</button>
-</form>
-
-<script>
-  function registerUser() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:3000/register", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onreadystatechange = function () {
-      console.log(xhr.readyState, xhr.status); // Добавьте эту строку
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const response = JSON.parse(xhr.responseText);
-        if (response.success) {
-          alert("User registered successfully!");
-        } else {
-          alert("Registration failed.");
-        }
-      }
-    };
-
-
-    const data = JSON.stringify({ username, password });
-    xhr.send(data);
-  }
-</script>
-<script src="login.js"></script>
+  <h1>Регистрация</h1>
+  <form action="/register" >
+    <label for="username">Логин:</label>
+    <input type="text" id="username" name="username" required>
+    <br>
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <button type="submit">Зарегистрироваться</button>
+  </form>
 </body>
 </html>
