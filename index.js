@@ -1,41 +1,32 @@
-const fs = require('fs');
-const { MongoClient } = require('mongodb');
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const User = require("./user"); // Подключаем схему пользователя
+const app = express();
 
-async function uploadImage(imagePath, description) {
-    const uri = 'mongodb+srv://aminamukanova:mP7VJA5x7awfWlFa@cluster0.qz00xol.mongodb.net';
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+app.use(bodyParser.json());
+
+mongoose.connect("mongodb+srv://guzalmazitova:rayana2015@cluster0.ynanytb.mongodb.net/mortex", {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+app.post("/register", async (req, res) => {
+    const { username, password } = req.body;
 
     try {
-        await client.connect();
-        console.log('Connected to MongoDB!');
+        const newUser = new User({
+            username: username,
+            password: password,
+        });
 
-        const database = client.db('mortex');
-        const collection = database.collection('image');
-
-
-        const imageBuffer = fs.readFileSync(imagePath);
-
-
-        const imageDocument = {
-            description: description,
-            image: imageBuffer,
-        };
-
-        const result = await collection.insertOne(imageDocument);
-        console.log('Image added with ID:', result.insertedId);
+        await newUser.save();
+        res.json({ success: true, message: "User registered successfully" });
     } catch (err) {
-        console.error('Error uploading image to MongoDB:', err);
-    } finally {
-        client.close();
+        res.json({ success: false, message: "Registration failed" });
     }
-}
+});
 
-
-const imagePath = 'product5.jpg';
-const imageDescription = 'shoes for women and men';
-
-
-
-
-
-uploadImage(imagePath, imageDescription);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
