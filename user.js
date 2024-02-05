@@ -1,13 +1,19 @@
-const mongoose = require('mongoose');
-
-// Определение схемы пользователя
-const userSchema = new mongoose.Schema({
-    username: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
+var mongoose = require('mongoose');
+var schema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    firstName: {
+        type: String,
+        default: ''
+    },
+    lastName: {
+        type: String,
+        default: ''
+    },
+    phone: String,
 });
-
-// Создание модели пользователя на основе схемы
-const User = mongoose.model('User', userSchema);
-
-// Экспорт модели пользователя
-module.exports = User;
+var user = new mongoose.model('User', schema);
+module.exports = user;
