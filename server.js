@@ -1,62 +1,43 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const cors = require("cors");
+
+const UserModel = require("./user.model");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(cors());
+app.use(express.json());
 
-// Подключение к MongoDB
-mongoose
-  .connect(
-    "mongodb+srv://guzalmazitova:rayana2015@cluster0.ynanytb.mongodb.net/",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => {
-    console.log("Успешное подключение к MongoDB");
-  })
-  .catch((err) => {
-    console.error("Ошибка подключения к MongoDB:", err);
-  });
-
-// Определение схемы пользователя
-const userSchema = new mongoose.Schema({
-  username: String,
-  password: String,
+mongoose.connect("mongodb+srv://guzalmazitova:rayana2015@cluster0.ynanytb.mongodb.net/mortex?retryWrites=true&w=majority", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  // useCreateIndex: true, // Новый параметр
 });
 
-// Создание модели пользователя
-const User = mongoose.model("User", userSchema);
-
-// Регистрационная форма
 app.post("/register", async (req, res) => {
-  const { username, password } = req.body;
-
-  // Проверка наличия данных
-  if (!username || !password) {
-    return res.status(400).send("Пожалуйста, заполните все поля.");
-  }
-
   try {
-    // Создание нового пользователя
-    const newUser = new User({ username, password });
-
-    // Сохранение пользователя в базе данных
-    await newUser.save();
-    console.log("Пользователь успешно зарегистрирован:", newUser);
-    return res.status(200).send("Пользователь успешно зарегистрирован.");
+    const { username, password } = req.body;
+    const newUser = await UserModel.create({ username, password });
+    res.json({ status: "ok", user: { username: newUser.username } });
   } catch (err) {
-    console.error("Ошибка при сохранении пользователя:", err);
-    return res.status(500).send("Ошибка при сохранении пользователя.");
+    console.log(err);
+    res.json({ status: "error", error: err.message });
   }
 });
 
-// Запуск сервера
-app.listen(PORT, () => {
-  console.log(`Сервер запущен на порту ${PORT}`);
+const PORT = process.env.PORT || 1337;
+
+// Используйте app.listen, чтобы предотвратить ошибку EADDRINUSE
+const server = app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
+
+// Обработка закрытия сервера для избежания ошибки EADDRINUSE
+process.on('SIGINT', function() {
+  console.log('Server shutting down');
+  server.close(function() {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });
