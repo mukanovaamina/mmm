@@ -61,6 +61,9 @@
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" required />
       <br />
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+      <br />
       <button type="submit">register</button>
     </form>
 
@@ -71,14 +74,16 @@
 
           const username = $("#username").val();
           const password = $("#password").val();
+          const email = $("#email").val();
 
           $.ajax({
-            url: "http://localhost:1337/register",
+            url: "http://localhost:3000/register",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({
               username,
               password,
+              email
             }),
             success: function (data) {
               console.log(data);
@@ -94,6 +99,30 @@
           });
         });
       });
+      function registerUser() {
+        const username = document.getElementById("username").value;
+        const userPassword = document.getElementById("userPassword").value;
+        const useremail = document.getElementById("useremail").value;
+
+
+        $.ajax({
+          url: "/register", // Путь к вашему серверному скрипту
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            username,
+            password: userPassword,
+            email: useremail
+          }),
+          success: function (data) {
+            console.log(data);
+            // Обработка успешного ответа от сервера
+          },
+          error: function (error) {
+            console.error("Error registering user:", error);
+          },
+        });
+      }
     </script>
   </body>
 </html>
