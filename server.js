@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb+srv://guzalmazitova:rayana2015@cluster0.ynanytb.mongodb.net/mortex?retryWrites=true&w=majority", {
+mongoose.connect("mongodb://localhost:27017/mortex", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   // useCreateIndex: true, // Новый параметр
@@ -17,8 +17,8 @@ mongoose.connect("mongodb+srv://guzalmazitova:rayana2015@cluster0.ynanytb.mongod
 
 app.post("/register", async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const newUser = await UserModel.create({ username, password });
+    const { username, password, email } = req.body;
+    const newUser = await UserModel.create({ username, password, email });
     res.json({ status: "ok", user: { username: newUser.username } });
   } catch (err) {
     console.log(err);
@@ -26,7 +26,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 1337;
+const PORT = process.env.PORT || 3000;
 
 // Используйте app.listen, чтобы предотвратить ошибку EADDRINUSE
 const server = app.listen(PORT, () => {
