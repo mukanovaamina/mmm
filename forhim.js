@@ -1,32 +1,26 @@
+// forhim.js
 document.addEventListener("DOMContentLoaded", function () {
   const productsContainer = document.getElementById("productSection");
   const filterItems = document.querySelectorAll(".filter-item");
+  const loadMoreButton = document.getElementById("loadMoreButton"); // Assuming you have a "Load More" button
 
   // Sample product data
-  const products = [
+  let products = [
     {
       category: "shoes",
       imageUrl: "product5.jpg",
       title: "Black trainers",
       description: "For man. New collection",
+      price: 59.99,
+      productId: "1", // Replace with the actual product ID from MongoDB
     },
     {
       category: "belts",
       imageUrl: "product2.jpg",
       title: "Belt",
       description: "For man.",
-    },
-    {
-      category: "jackets",
-      imageUrl: "product4.jpg",
-      title: "Sweater",
-      description: "For man.",
-    },
-    {
-      category: "accessories",
-      imageUrl: "necklace.jpg",
-      title: "Necklace",
-      description: "For man.",
+      price: 29.99,
+      productId: "2", // Replace with the actual product ID from MongoDB
     },
     // Add more product entries here
   ];
@@ -43,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="card-body">
           <h5 class="card-title">${product.title}</h5>
           <h6 class="card-text">${product.description}</h6>
-          <a href="#" class="btn btn-primary">Buy Now</a>
+          <p class="card-price">Price: $${product.price.toFixed(2)}</p>
+          <a href="#" class="btn btn-primary" onclick="addToBasket('${product.title}', ${product.price}, '${product.productId}')">Buy Now</a>
         </div>
       </div>
     `;
@@ -76,4 +71,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initial display of all products
   renderProducts("all");
+
+  // Function to add a product to the basket
+  function addToBasket(productTitle, productPrice, productId) {
+    const username = "user1"; // Replace with the actual logged-in user's username
+    const quantity = 1; // You can modify this if needed
+    const totalPrice = productPrice * quantity;
+
+    $.ajax({
+      url: "http://localhost:1337/addToBasket",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({
+        username,
+        productId,
+        quantity,
+        totalPrice,
+      }),
+      success: function (data) {
+        console.log(data);
+        alert(`Product added to basket: ${productTitle} - $${productPrice.toFixed(2)}`);
+      },
+      error: function (error) {
+        console.error("Error adding product to basket:", error);
+        alert("Error adding product to basket.");
+      },
+    });
+  }
 });
